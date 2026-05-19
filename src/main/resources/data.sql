@@ -2,7 +2,8 @@
 INSERT INTO genres(genre_name, is_income) VALUES('収入', TRUE);
 INSERT INTO genres(genre_name, is_income) VALUES('固定費', FALSE);
 INSERT INTO genres(genre_name, is_income) VALUES('変動費', FALSE);
-INSERT INTO genres(genre_name, is_income) VALUES('その他', FALSE);
+INSERT INTO genres(genre_name, is_income) VALUES('その他の収入', TRUE);
+INSERT INTO genres(genre_name, is_income) VALUES('その他の支出', FALSE);
 -- ユーザテーブルデータ
 INSERT INTO users(user_name,email,password) VALUES('田中太郎', 'tanaka@aaa.com','himitu');
 INSERT INTO users(user_name,email,password) VALUES('鈴木一郎', 'suzuki@aaa.com','himitu');
