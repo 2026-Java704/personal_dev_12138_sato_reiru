@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
 	<meta charset="UTF-8">
 	<title>項目編集</title>
 </head>
-
 <body>
 	<h1>項目編集</h1>
 	<form method="post">
@@ -20,7 +18,7 @@
 				<th>ジャンル</th>
 				<td>
 					<select name="genreId">
-						<option th:each="genre:${genres}" th:value="${genre.id}" 
+						<option th:each="genre:${genres}" th:value="${genre.id}"
 							th:selected="*{genre.id} == ${genre.id}">[[${genre.genreName}]]</option>
 					</select>
 				</td>
@@ -47,5 +45,4 @@
 		<button>確定</button>
 	</form>
 </body>
-
 </html>
