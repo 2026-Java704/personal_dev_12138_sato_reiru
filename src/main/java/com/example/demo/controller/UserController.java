@@ -17,11 +17,12 @@ import com.example.demo.repository.UserRepository;
 
 @Controller
 public class UserController {
-	HttpSession session;
-	Account account;
-	UserRepository repository;
+	private final Account account;
+	private final HttpSession session;
+	private final UserRepository repository;
 
-	public UserController(HttpSession session,
+	public UserController(
+			HttpSession session,
 			Account account,
 			UserRepository repository) {
 		this.session = session;
@@ -37,10 +38,10 @@ public class UserController {
 
 	@GetMapping("/register")
 	public String register(Model model) {
-		model.addAttribute("name", "佐藤玲瑠");
-		model.addAttribute("email", "sato@example.com");
-		model.addAttribute("password", "himitu");
-		model.addAttribute("passwordConfirm", "himitu");
+		//		model.addAttribute("name", "佐藤玲瑠");
+		//		model.addAttribute("email", "sato@example.com");
+		//		model.addAttribute("password", "himitu");
+		//		model.addAttribute("passwordConfirm", "himitu");
 		return "register";
 	}
 
@@ -61,6 +62,8 @@ public class UserController {
 		}
 		if (email.isEmpty()) {
 			errors.add("メールアドレスは必須です");
+		} else if (!repository.findByEmail(email).isEmpty()) {
+			errors.add("登録されたメールアドレスです");
 		}
 		if (password.isEmpty()) {
 			errors.add("パスワードは必須です");
