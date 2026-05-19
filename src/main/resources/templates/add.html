@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>項目登録</title>
+</head>
+
+<body>
+	<h1>項目登録</h1>
+	<form method="post">
+		<table border="1">
+			<tr>
+				<th>件名</th>
+				<td>
+					<input type="text" name="name">
+				</td>
+			</tr>
+			<tr>
+				<th>ジャンル</th>
+				<td>
+					<select name="genreId">
+						<option th:each="genre:${genres}" th:value="${genre.id}">[[${genre.genreName}]]</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>金額</th>
+				<td>
+					<input type="number" name="price" value="0">
+				</td>
+			</tr>
+			<tr>
+				<th>日付</th>
+				<td>
+					<input type="date" name="addDate">
+				</td>
+			</tr>
+			<tr>
+				<th>備考</th>
+				<td>
+					<input type="text" name="comment">
+				</td>
+			</tr>
+		</table>
+		<button>登録</button>
+	</form>
+</body>
+
+</html>
