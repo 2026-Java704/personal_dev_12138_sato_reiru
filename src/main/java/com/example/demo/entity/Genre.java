@@ -26,6 +26,10 @@ public class Genre {
 		this.isIncome = isIncome;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
 	public String getGenreName() {
 		return genreName;
 	}
