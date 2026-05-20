@@ -19,7 +19,7 @@ import com.example.demo.repository.UserRepository;
 public class UserController {
 	private final Account account;
 	private final HttpSession session;
-	private final UserRepository repository;
+	private final UserRepository userRepository;
 
 	public UserController(
 			HttpSession session,
@@ -27,7 +27,7 @@ public class UserController {
 			UserRepository repository) {
 		this.session = session;
 		this.account = account;
-		this.repository = repository;
+		this.userRepository = repository;
 	}
 
 	@GetMapping("/")
@@ -62,7 +62,7 @@ public class UserController {
 		}
 		if (email.isEmpty()) {
 			errors.add("メールアドレスは必須です");
-		} else if (!repository.findByEmail(email).isEmpty()) {
+		} else if (!userRepository.findByEmail(email).isEmpty()) {
 			errors.add("登録されたメールアドレスです");
 		}
 		if (password.isEmpty()) {
@@ -75,7 +75,7 @@ public class UserController {
 			return "register";
 		}
 		User user = new User(name, email, password);
-		repository.save(user);
+		userRepository.save(user);
 		return "redirect:/login";
 	}
 
@@ -90,7 +90,7 @@ public class UserController {
 			@RequestParam(defaultValue = "") String email,
 			@RequestParam(defaultValue = "") String password,
 			Model model) {
-		List<User> list = repository.findByEmailAndPassword(email, password);
+		List<User> list = userRepository.findByEmailAndPassword(email, password);
 		if (list.isEmpty()) {
 			model.addAttribute("message", "メールアドレスとパスワードが一致しませんでした。");
 			return "/login";
