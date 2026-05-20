@@ -10,7 +10,8 @@
 	<div class="content">
 		<div class="left-content"></div>
 		<div class="main-content">
-			<h1>ユーザ登録</h1>
+			<h2>ユーザ登録</h2>
+			<hr>
 			<ul style="color: red;" th:if="${errors}">
 				<li th:each="error:${errors}">[[${error}]]</li>
 			</ul>
