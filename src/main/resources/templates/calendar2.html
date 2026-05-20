@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>手動カレンダー</title>
+</head>
+<body>
+	<h1>カレンダー</h1>
+	<div id="calendar">[[${calendarHtml}]]</div>
+	<script th:inline="javascript">
+		let calendarEl = document.querySelector('#calendar');
+		// その月の最初の曜日を取得(1:月曜,7:日曜 -> 0:日曜,6:土曜)
+		let weekList = ['日', '月', '火', '水', '木', '金', '土'];
+		const year = /*[[${year}]]*/ 2026;
+		const month = /*[[${month}]]*/ 5;
+		console.log(year + "," + month);
+
+		const startDate = new Date(year, month - 1, 1);
+		const startDay = startDate.getDay(); // 曜日
+		const endDate = new Date(year, month, 0);
+		const endDayCount = endDate.getDate();
+		console.log("startDate:" + startDate + "\nstartDay:" + startDay);
+
+		let dayCount = 1;
+		let calendarHtml = '<table border="1"><tr>';
+		let flag = true;
+
+		for (let i = 0; i < 7; i++) {
+			calendarHtml += '<td>' + weekList[i] + '</td>';
+		}
+		calendarHtml += '</tr>';
+		for (let week = 0; flag; week++) {
+			calendarHtml += '<tr>';
+			for (let day = 0; day < 7; day++) {
+				calendarHtml += '<td>';
+				if (week == 0 && day < startDay) {
+					calendarHtml += '</td>';
+					continue;
+				} else if (dayCount > endDayCount) {
+					calendarHtml += '</td>';
+					if (day == 6) {
+						flag = false;
+					}
+					continue;
+				}
+				calendarHtml += dayCount + '</td>';
+				dayCount++;
+			}
+			calendarHtml += '</tr>';
+		}
+		calendarHtml += '</table>';
+
+		calendarEl.innerHTML = calendarHtml;
+	</script>
+</body>
+</html>
