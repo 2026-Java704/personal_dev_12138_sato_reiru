@@ -3,36 +3,45 @@
 <head>
 	<meta charset="UTF-8">
 	<title>項目詳細</title>
+	<link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-	<h1>項目詳細</h1>
-	<table border="1" th:object="${item}">
-		<tr>
-			<th>名前</th>
-			<td>[[*{itemName}]]</td>
-		</tr>
-		<tr>
-			<th>カテゴリ</th>
-			<td>[[*{genre.genreName}]]</td>
-		</tr>
-		<tr>
-			<th>[[*{genre.isIncome} ? '収入' : '支出']]</th>
-			<td>[[*{price}]]</td>
-		</tr>
-		<tr>
-			<th>日付</th>
-			<td>[[*{addDate}]]</td>
-		</tr>
-		<tr>
-			<th>備考</th>
-			<td>[[*{comment}]]</td>
-		</tr>
-	</table>
-	<form action="/items">
-		<button>一覧に戻る</button>
-	</form>
-	<form action="/items/calendar">
-		<button>カレンダーに戻る</button>
-	</form>
+	<header th:replace="~{header}"></header>
+	<div class="content">
+		<div class="left-content"></div>
+		<div class="main-content">
+			<h1>項目詳細</h1>
+			<table border="1" th:object="${item}">
+				<tr>
+					<th>名前</th>
+					<td>[[*{itemName}]]</td>
+				</tr>
+				<tr>
+					<th>カテゴリ</th>
+					<td>[[*{genre.genreName}]]</td>
+				</tr>
+				<tr>
+					<th>[[*{genre.isIncome} ? '収入' : '支出']]</th>
+					<td>[[*{price}]]</td>
+				</tr>
+				<tr>
+					<th>日付</th>
+					<td>[[*{addDate}]]</td>
+				</tr>
+				<tr>
+					<th>備考</th>
+					<td>[[*{comment}]]</td>
+				</tr>
+			</table>
+			<form action="/items">
+				<button>一覧に戻る</button>
+			</form>
+			<form action="/items/calendar">
+				<button>カレンダーに戻る</button>
+			</form>
+		</div>
+		<div class="right-content"></div>
+	</div>
+	<footer th:replace="~{footer}"></footer>
 </body>
 </html>

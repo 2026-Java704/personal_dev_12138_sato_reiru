@@ -7,21 +7,27 @@
 </head>
 <body>
 	<header th:replace="~{header}"></header>
-	<h1>アカウント情報</h1>
-	<table border="1" th:object="${user}">
-		<tr>
-			<th>アカウントID</th>
-			<td>[[*{id}]]</td>
-		</tr>
-		<tr>
-			<th>名前</th>
-			<td>[[*{userName}]]</td>
-		</tr>
-		<tr>
-			<th>メールアドレス</th>
-			<td>[[*{email}]]</td>
-		</tr>
-	</table>
+	<div class="content">
+		<div class="left-content"></div>
+		<div class="main-content">
+			<h1>アカウント情報</h1>
+			<table border="1" th:object="${user}">
+				<tr>
+					<th>アカウントID</th>
+					<td>[[*{id}]]</td>
+				</tr>
+				<tr>
+					<th>名前</th>
+					<td>[[*{userName}]]</td>
+				</tr>
+				<tr>
+					<th>メールアドレス</th>
+					<td>[[*{email}]]</td>
+				</tr>
+			</table>
+		</div>
+		<div class="right-content"></div>
+	</div>
 	<footer th:replace="~{footer}"></footer>
 </body>
 </html>

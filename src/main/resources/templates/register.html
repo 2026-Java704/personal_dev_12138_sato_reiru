@@ -3,43 +3,49 @@
 <head>
 	<meta charset="UTF-8">
 	<title>ユーザ登録</title>
+	<link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-	<h1>ユーザ登録</h1>
-	<ul style="color: red;" th:if="${errors}">
-		<li th:each="error:${errors}">[[${error}]]</li>
-	</ul>
-	<form action="/register" method="post">
-		<table border="1">
-			<tr>
-				<th>名前</th>
-				<td>
-					<input type="text" name="name" th:value="${name}">
-				</td>
-			</tr>
-			<tr>
-				<th>email</th>
-				<td>
-					<input type="email" name="email" th:value="${email}">
-				</td>
-			</tr>
-			<tr>
-				<th>パスワード</th>
-				<td>
-					<input type="password" name="password" th:value="${password}">
-				</td>
-			</tr>
-			<tr>
-				<th>パスワード確認</th>
-				<td>
-					<input type="password" name="passwordConfirm" th:value="${passwordConfirm}">
-				</td>
-			</tr>
-		</table>
-		<button>登録</button>
-	</form>
-	<form action="login">
-		<button>キャンセル</button>
-	</form>
+	<header th:replace="~{subHeader}"></header>
+	<div class="content">
+		<div class="left-content"></div>
+		<div class="main-content">
+			<h1>ユーザ登録</h1>
+			<ul style="color: red;" th:if="${errors}">
+				<li th:each="error:${errors}">[[${error}]]</li>
+			</ul>
+			<form action="/register" method="post">
+				<table border="1">
+					<tr>
+						<th>名前</th>
+						<td>
+							<input type="text" name="name" th:value="${name}">
+						</td>
+					</tr>
+					<tr>
+						<th>email</th>
+						<td>
+							<input type="email" name="email" th:value="${email}">
+						</td>
+					</tr>
+					<tr>
+						<th>パスワード</th>
+						<td>
+							<input type="password" name="password" th:value="${password}">
+						</td>
+					</tr>
+					<tr>
+						<th>パスワード確認</th>
+						<td>
+							<input type="password" name="passwordConfirm" th:value="${passwordConfirm}">
+						</td>
+					</tr>
+				</table>
+				<button class="classic-button">登録</button>
+			</form>
+		</div>
+		<div class="right-content"></div>
+	</div>
+	<footer th:replace="~{footer}"></footer>
 </body>
 </html>

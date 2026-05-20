@@ -3,46 +3,56 @@
 <head>
 	<meta charset="UTF-8">
 	<title>項目編集</title>
+	<link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-	<h1>項目編集</h1>
-	<form method="post">
-		<table border="1" th:object="${item}">
-			<tr>
-				<th>件名</th>
-				<td>
-					<input type="text" name="name" th:value="*{itemName}">
-				</td>
-			</tr>
-			<tr>
-				<th>ジャンル</th>
-				<td>
-					<select name="genreId">
-						<option th:each="genre:${genres}" th:value="${genre.id}"
-							th:selected="*{genre.id} == ${genre.id}">[[${genre.genreName}]]</option>
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<th>金額</th>
-				<td>
-					<input type="number" name="price" value="0" th:value="*{price}">
-				</td>
-			</tr>
-			<tr>
-				<th>日付</th>
-				<td>
-					<input type="date" name="addDate" th:value="*{addDate}">
-				</td>
-			</tr>
-			<tr>
-				<th>備考</th>
-				<td>
-					<input type="text" name="comment" th:value="*{comment}">
-				</td>
-			</tr>
-		</table>
-		<button>確定</button>
-	</form>
+	<header th:replace="~{header}"></header>
+	<div class="content">
+		<div class="left-content"></div>
+		<div class="main-content">
+			<h1>項目編集</h1>
+			<form method="post">
+				<table border="1" th:object="${item}">
+					<tr>
+						<th>件名</th>
+						<td>
+							<input type="text" name="name" th:value="*{itemName}">
+						</td>
+					</tr>
+					<tr>
+						<th>ジャンル</th>
+						<td>
+							<select name="genreId">
+								<option th:each="genre:${genres}" th:value="${genre.id}"
+									th:selected="*{genre.id} == ${genre.id}">
+									[[${genre.genreName}]]</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th>金額</th>
+						<td>
+							<input type="number" name="price" value="0" th:value="*{price}">
+						</td>
+					</tr>
+					<tr>
+						<th>日付</th>
+						<td>
+							<input type="date" name="addDate" th:value="*{addDate}">
+						</td>
+					</tr>
+					<tr>
+						<th>備考</th>
+						<td>
+							<input type="text" name="comment" th:value="*{comment}">
+						</td>
+					</tr>
+				</table>
+				<button>確定</button>
+			</form>
+		</div>
+		<div class="right-content"></div>
+	</div>
+	<footer th:replace="~{footer}"></footer>
 </body>
 </html>
