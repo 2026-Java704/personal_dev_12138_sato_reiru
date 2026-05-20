@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="/css/style.css">
 	<style>
 		#calendar {
 			max-width: 900px;
@@ -12,6 +13,7 @@
 	<title>カレンダー表示</title>
 </head>
 <body>
+	<header th:replace="~{header}"></header>
 	<h1>カレンダー</h1>
 	<div id="calendar"></div>
 	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
@@ -35,10 +37,6 @@
 			calendar.render();
 		});
 	</script>
-	<footer>
-		<form action="/items">
-			<button>一覧表示</button>
-		</form>
-	</footer>
+	<footer th:replace="~{footer}"></footer>
 </body>
 </html>

@@ -3,54 +3,58 @@
 <head>
 	<meta charset="UTF-8">
 	<title>登録項目一覧</title>
+	<link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-	<h1>登録項目一覧</h1>
-	<ul>アカウント情報
-		<li>[[${@account.id}]]</li>
-		<li>[[${@account.name}]]</li>
-	</ul>
-	<a href="/items">全商品</a>&nbsp;|
-	<a th:each="genre:${genres}" style="margin-left: 10px;"
-		th:href="@{/items(genreId=${genre.id})}">[[${genre.genreName}]]</a>
-	<table border="1">
-		<tr>
-			<th>項目目</th>
-			<th>ユーザ名</th>
-			<th>ジャンル名</th>
-			<th>収入</th>
-			<th>支出</th>
-			<th>日付</th>
-			<th>備考</th>
-			<th>編集</th>
-			<th>削除</th>
-		</tr>
-		<tr th:each="item:${items}" th:object="${item}">
-			<td>[[*{itemName}]]</td>
-			<td>[[*{user.userName}]]</td>
-			<td>[[*{genre.genreName}]]</td>
-			<td th:text="*{genre.isIncome} ? *{price} : ''"></td>
-			<td th:text="*{genre.isIncome} ? '' : *{price}"></td>
-			<td>[[*{addDate}]]</td>
-			<td>[[*{comment}]]</td>
-			<td>
-				<form th:action="@{/items/{id}/edit(id=*{id})}">
-					<button>編集</button>
-				</form>
-			</td>
-			<td>
-				<form th:action="@{/items/{id}/delete(id=*{id})}" method="post">
-					<button>削除</button>
-				</form>
-			</td>
-		</tr>
-	</table>
-	<p>今月の収支：[[${totalPrice}]]</p>
-	<form action="/items/add">
-		<button>項目登録</button>
-	</form>
-	<form action="/items/calendar">
-		<button>カレンダー表示</button>
-	</form>
+	<header th:replace="~{header}"></header>
+	<div class="content"><div class="left-content"></div>
+	<div class="main-content">
+		<h1>登録項目一覧</h1>
+		<ul style="list-style: none;">
+			<li>ID：[[${@account.id}]]</li>
+			<li>名前：[[${@account.name}]]</li>
+		</ul>
+		<a href="/items">全商品</a>&nbsp;|
+		<a th:each="genre:${genres}" style="margin-left: 10px;"
+			th:href="@{/items(genreId=${genre.id})}">[[${genre.genreName}]]</a>
+		<table border="1">
+			<tr>
+				<th>項目目</th>
+				<th>ユーザ名</th>
+				<th>ジャンル名</th>
+				<th>収入</th>
+				<th>支出</th>
+				<th>日付</th>
+				<th>備考</th>
+				<th>編集</th>
+				<th>削除</th>
+			</tr>
+			<tr th:each="item:${items}" th:object="${item}">
+				<td>[[*{itemName}]]</td>
+				<td>[[*{user.userName}]]</td>
+				<td>[[*{genre.genreName}]]</td>
+				<td th:text="*{genre.isIncome} ? *{price} : ''"></td>
+				<td th:text="*{genre.isIncome} ? '' : *{price}"></td>
+				<td>[[*{addDate}]]</td>
+				<td>[[*{comment}]]</td>
+				<td>
+					<form th:action="@{/items/{id}/edit(id=*{id})}">
+						<button>編集</button>
+					</form>
+				</td>
+				<td>
+					<form th:action="@{/items/{id}/delete(id=*{id})}" method="post">
+						<button>削除</button>
+					</form>
+				</td>
+			</tr>
+		</table>
+		<form action="/items/add">
+			<button>項目登録</button>
+		</form>
+		<p>今月の収支：[[${totalPrice}]]</p>
+	</div>
+	<div class="right-content"></div></div>
+	<footer th:replace="~{footer}"></footer>
 </body>
 </html>
