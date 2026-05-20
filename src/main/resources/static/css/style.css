@@ -1,27 +1,46 @@
-.content {
+html,
+body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+
+body {
 	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+.main-header,
+.main-footer {
+	width: 100%;
+	background-color: #333333;
+	color: #ffffff;
+}
+
+.main-header {
+	height: 100px;
+	top: 0;
+	left: 0;
+	position: fixed;
+}
+
+.main-footer {
+	min-height: 50px;
+	height: 50px;
+	bottom: 0;
+}
+
+.content {
+	flex: 1;
+	display: flex;
+	margin-top: 100px;
+	margin-bottom: -5px;
 }
 
 .main-content {
 	background-color: aliceblue;
 	width: 60%;
-}
-
-.left-content {
-	background-color: aquamarine;
-	width: 20%;
-}
-
-.right-content {
-	background-color: darksalmon;
-	width: 20%;
-}
-
-.main-header,
-.main-footer {
-	padding: 16px 24px;
-	background-color: #333333;
-	color: #ffffff;
 }
 
 .main-header-logo {
@@ -37,6 +56,7 @@
 	font-weight: bold;
 	margin-top: 24px;
 	list-style: none;
+	padding-left: 0;
 }
 
 .main-header-anchor {
@@ -50,4 +70,273 @@
 	justify-content: center;
 	margin-top: 5px;
 	margin-bottom: 0;
+}
+
+.left-content {
+	background-color: mediumaquamarine;
+	width: 20%;
+}
+
+.right-content {
+	background-color: mediumaquamarine;
+	width: 20%;
+}
+
+.classic-button {
+	text-align: center;
+	text-decoration: none;
+	margin-top: 5px;
+	padding: 5px 10px;
+	border: 2px solid #333333;
+	border-radius: 1vh;
+	background: #333333;
+	color: #ffffff;
+	transition: 0.2s;
+}
+
+.classic-button:hover {
+	color: #333333;
+	background: #ffffff;
+}
+
+.item-delete-button {
+	text-align: center;
+	text-decoration: none;
+	margin: 1px;
+	padding: 5px 10px;
+	border: 2px solid #e74c3c;
+	border-radius: 1vh;
+	background: #e74c3c;
+	color: #ffffff;
+	transition: 0.2s;
+}
+
+.item-delete-button:hover {
+	color: #e74c3c;
+	background: #ffffff;
+}
+
+.item-edit-button {
+	text-align: center;
+	text-decoration: none;
+	margin: 1px;
+	padding: 5px 10px;
+	border: 2px solid #3b82f6;
+	border-radius: 1vh;
+	background: #3b82f6;
+	color: #ffffff;
+	transition: 0.2s;
+}
+
+.item-edit-button:hover {
+	color: #3b82f6;
+	background: #ffffff;
+}
+
+.item-table {
+	table-layout: fixed;
+	border-collapse: collapse;
+	width: 100%;
+	text-align: center;
+
+	thead {
+		background: #333333;
+		color: #ffffff;
+		position: sticky;
+
+		tr {
+			position: relative;
+			display: table;
+			width: 100%;
+			table-layout: fixed;
+		}
+	}
+
+	tbody {
+		display: block;
+		overflow-y: scroll;
+		max-height: 300px;
+		background: #ffffff;
+
+		tr {
+			display: table;
+			width: 100%;
+			table-layout: fixed;
+		}
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
+
+		scrollbar-width: none;
+	}
+
+	th,
+	td {
+		min-width: 50px;
+		padding: 2px 5px;
+		box-sizing: border-box;
+
+
+		/*項目名*/
+		&:nth-child(1) {
+			width: 15%;
+		}
+
+		/*ジャンル名*/
+		&:nth-child(2) {
+			width: 12%;
+		}
+
+		/*収入*/
+		&:nth-child(3) {
+			width: 8%;
+		}
+
+		/*支出*/
+		&:nth-child(4) {
+			width: 8%;
+		}
+
+		/*日付*/
+		&:nth-child(5) {
+			width: 12%;
+		}
+
+		/*備考*/
+		&:nth-child(6) {
+			flex-grow: 1;
+		}
+
+		/*更新*/
+		&:nth-child(7) {
+			justify-items: center;
+			padding: 0;
+			width: 7%;
+		}
+
+		/*削除*/
+		&:nth-child(8) {
+			justify-items: center;
+			padding: 0;
+			width: 7%;
+		}
+	}
+}
+
+/*.item-table {
+	table-layout: fixed;
+	border-collapse: collapse;
+	width: 100%;
+
+	thead {
+		background: #333333;
+		color: #ffffff;
+		position: sticky;
+
+		tr {
+			display: block;
+			position: relative;
+		}
+	}
+
+	tbody {
+		display: block;
+		overflow: auto;
+		max-height: 300px;
+		background: #ffffff;
+	}
+
+	th,
+	td {
+		min-width: 50px;
+		padding: 2px 5px;
+	}
+
+	項目名
+	&:nth-child(1) {
+		width: 15%;
+	}
+
+	ユーザ名
+	&:nth-child(2) {
+		width: 15%;
+	}
+
+	ジャンル名
+	&:nth-child(3) {
+		width: 15%;
+	}
+
+	収入
+	&:nth-child(4) {
+		width: 5%;
+	}
+
+	支出
+	&:nth-child(5) {
+		width: 5%;
+	}
+
+	日付
+	&:nth-child(6) {
+		width: 15%;
+	}
+
+	備考
+	&:nth-child(7) {
+		width: 20%;
+	}
+
+	更新
+	&:nth-child(8) {
+		width: 5%;
+	}
+
+	削除
+	&:nth-child(9) {
+		width: 5%;
+	}
+}
+*/
+
+.item-view-button-all {
+	text-align: center;
+	text-decoration: none;
+	margin-bottom: 5px;
+	padding: 5px 10px;
+	border: 2px solid #28a745;
+	border-radius: 1vh;
+	background: #28a745;
+	color: #ffffff;
+	transition: 0.2s;
+}
+
+.item-view-button-all:hover {
+	color: #28a745;
+	background: #ffffff;
+}
+
+.item-view-button-genre {
+	text-align: center;
+	text-decoration: none;
+	margin-left: 5px;
+	margin-bottom: 5px;
+	padding: 5px 10px;
+	border: 2px solid #333333;
+	border-radius: 1vh;
+	background: #333333;
+	color: #ffffff;
+	transition: 0.2s;
+}
+
+.item-view-button-genre:hover {
+	color: #333333;
+	background: #ffffff;
+}
+
+.total-price {
+	width: 200px;
+	font-size: large;
+	border-bottom: double 5px #333333;
 }
