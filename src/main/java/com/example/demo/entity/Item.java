@@ -27,6 +27,7 @@ public class Item {
 	@ManyToOne
 	@JoinColumn(name = "genre_id")
 	private Genre genre;
+
 	private Integer price;
 	@Column(name = "add_date")
 	private LocalDate addDate;
