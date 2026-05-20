@@ -3,12 +3,23 @@
 <head>
 	<meta charset="UTF-8">
 	<title>手動カレンダー</title>
+	<link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-	<h1>カレンダー</h1>
-	<div id="calendar">[[${calendarHtml}]]</div>
+	<header th:replace="~{header}"></header>
+	<div class="content">
+		<div class="left-content"></div>
+		<div class="main-content">
+			<h2>カレンダー</h2>
+			<hr>
+			<div id="manual-calendar">[[${calendarHtml}]]</div>
+		</div>
+		<div class="right-content"></div>
+	</div>
+	<footer th:replace="~{footer}"></footer>
+
 	<script th:inline="javascript">
-		let calendarEl = document.querySelector('#calendar');
+		let calendarEl = document.querySelector('#manual-calendar');
 		// その月の最初の曜日を取得(1:月曜,7:日曜 -> 0:日曜,6:土曜)
 		let weekList = ['日', '月', '火', '水', '木', '金', '土'];
 		const year = /*[[${year}]]*/ 2026;
@@ -20,13 +31,23 @@
 		const endDate = new Date(year, month, 0);
 		const endDayCount = endDate.getDate();
 		console.log("startDate:" + startDate + "\nstartDay:" + startDay);
+		
+		const today = new Date();
 
 		let dayCount = 1;
-		let calendarHtml = '<table border="1"><tr>';
+		let calendarHtml = '<table border="1" class="calendar-table"><tr>';
 		let flag = true;
 
 		for (let i = 0; i < 7; i++) {
-			calendarHtml += '<td>' + weekList[i] + '</td>';
+			if (i == 0) {
+				calendarHtml += '<th style="color: red;">';
+			}else if(i==6){
+				calendarHtml += '<th style="color: blue;">';
+			}
+			 else {
+				calendarHtml += '<th>';
+			}
+			calendarHtml += weekList[i] + '</th>';
 		}
 		calendarHtml += '</tr>';
 		for (let week = 0; flag; week++) {
