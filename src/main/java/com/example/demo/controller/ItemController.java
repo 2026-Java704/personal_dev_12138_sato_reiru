@@ -134,6 +134,16 @@ public class ItemController {
 		return "detail";
 	}
 
+	@GetMapping("/calendar/{year}/{month}")
+	public String calendar(
+			@PathVariable Integer year,
+			@PathVariable Integer month,
+			Model model) {
+		model.addAttribute("year", year);
+		model.addAttribute("month", month);
+		return "calendar2";
+	}
+
 	// 日付順にソート
 	public void sortByDate(List<Item> list) {
 		list.sort(Comparator.comparing(Item::getAddDate).reversed());
@@ -153,5 +163,11 @@ public class ItemController {
 			}
 		}
 		return totalPrice;
+	}
+
+	@GetMapping("/account/detail")
+	public String showAccount(Model model) {
+		model.addAttribute("user", userRepository.findById(account.getId()).get());
+		return "accountDetail";
 	}
 }
