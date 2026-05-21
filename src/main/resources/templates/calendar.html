@@ -2,48 +2,76 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-	<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css" rel="stylesheet">
+	<title>手動カレンダー</title>
 	<link rel="stylesheet" href="/css/style.css">
-	<style>
-		#calendar {
-			max-width: 900px;
-			margin: 40px auto;
-		}
-	</style>
-	<title>カレンダー表示</title>
 </head>
 <body>
 	<header th:replace="~{header}"></header>
 	<div class="content">
 		<div class="left-content"></div>
 		<div class="main-content">
-			<h1>カレンダー</h1>
-			<div id="calendar"></div>
+			<h2>カレンダー</h2>
+			<hr>
+			<div id="manual-calendar">[[${calendarHtml}]]</div>
 		</div>
 		<div class="right-content"></div>
 	</div>
 	<footer th:replace="~{footer}"></footer>
 
-	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.15/locales-all.global.min.js"></script>
-
 	<script th:inline="javascript">
-		document.addEventListener('DOMContentLoaded', function () {
-			var items = /*[[${items}]]*/[];
-			var calendarEl = document.getElementById('calendar');
-			var calendar = new FullCalendar.Calendar(calendarEl, {
-				initialView: 'dayGridMonth',
-				locale: 'ja',
-				events: items.map(function (item) {
-					return {
-						title: item.itemName + ' (' + item.price + '円)',
-						start: item.addDate,
-						url: '/items/' + item.id + '/detail'
-					};
-				})
-			});
-			calendar.render();
-		});
+		let calendarEl = document.querySelector('#manual-calendar');
+		// その月の最初の曜日を取得(1:月曜,7:日曜 -> 0:日曜,6:土曜)
+		let weekList = ['日', '月', '火', '水', '木', '金', '土'];
+		const year = /*[[${year}]]*/ 2026;
+		const month = /*[[${month}]]*/ 5;
+		console.log(year + "," + month);
+
+		const startDate = new Date(year, month - 1, 1);
+		const startDay = startDate.getDay(); // 曜日
+		const endDate = new Date(year, month, 0);
+		const endDayCount = endDate.getDate();
+		console.log("startDate:" + startDate + "\nstartDay:" + startDay);
+		
+		const today = new Date();
+
+		let dayCount = 1;
+		let calendarHtml = '<table border="1" class="calendar-table"><tr>';
+		let flag = true;
+
+		for (let i = 0; i < 7; i++) {
+			if (i == 0) {
+				calendarHtml += '<th style="color: red;">';
+			}else if(i==6){
+				calendarHtml += '<th style="color: blue;">';
+			}
+			 else {
+				calendarHtml += '<th>';
+			}
+			calendarHtml += weekList[i] + '</th>';
+		}
+		calendarHtml += '</tr>';
+		for (let week = 0; flag; week++) {
+			calendarHtml += '<tr>';
+			for (let day = 0; day < 7; day++) {
+				calendarHtml += '<td>';
+				if (week == 0 && day < startDay) {
+					calendarHtml += '</td>';
+					continue;
+				} else if (dayCount > endDayCount) {
+					calendarHtml += '</td>';
+					if (day == 6) {
+						flag = false;
+					}
+					continue;
+				}
+				calendarHtml += dayCount + '</td>';
+				dayCount++;
+			}
+			calendarHtml += '</tr>';
+		}
+		calendarHtml += '</table>';
+
+		calendarEl.innerHTML = calendarHtml;
 	</script>
 </body>
 </html>
