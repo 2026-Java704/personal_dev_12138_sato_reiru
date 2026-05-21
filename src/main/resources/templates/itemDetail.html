@@ -1,0 +1,30 @@
+<div th:if="${details}">
+	<h2 style="color: white;">項目詳細</h2>
+	<div th:each="item:${details}" th:object="${item}">
+		<hr>
+		<div style="justify-items: center;">
+			<table border="1" style="background: white;">
+				<tr>
+					<th>名前</th>
+					<td>[[*{itemName}]]</td>
+				</tr>
+				<tr>
+					<th>カテゴリ</th>
+					<td>[[*{genre.genreName}]]</td>
+				</tr>
+				<tr>
+					<th>[[*{genre.isIncome} ? '収入' : '支出']]</th>
+					<td>[[*{price}]]</td>
+				</tr>
+				<tr>
+					<th>日付</th>
+					<td>[[*{addDate}]]</td>
+				</tr>
+				<tr>
+					<th>備考</th>
+					<td>[[*{comment}]]</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
