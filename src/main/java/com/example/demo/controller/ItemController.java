@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -37,6 +39,7 @@ public class ItemController {
 
 	@GetMapping("/items")
 	public String index(
+			@RequestParam(defaultValue = "") Integer id,
 			@RequestParam(defaultValue = "") Integer genreId,
 			Model model) {
 		List<Genre> genres = genreRepository.findAll();
@@ -54,6 +57,13 @@ public class ItemController {
 		}
 		Method.sortByDate(items);
 		model.addAttribute("items", items);
+
+		if (id != null) {
+			List<Item> details = new ArrayList<Item>();
+			details.add(itemRepository.findById(id).get());
+			model.addAttribute("details", details);
+		}
+
 		return "items";
 	}
 
@@ -129,6 +139,33 @@ public class ItemController {
 	@GetMapping("/account/detail")
 	public String showAccount(Model model) {
 		model.addAttribute("user", userRepository.findById(account.getId()).get());
+
+		List<Item> allItems = itemRepository.findByUserId(account.getId());
+		List<String> monthes = new ArrayList<String>();
+		List<Integer> prices = new ArrayList<Integer>();
+		for (Item item : allItems) {
+			String monthKey = item.getAddDate().format(DateTimeFormatter.ofPattern("yyyy-MM"));
+			if (monthes.contains(monthKey)) {
+				int index = monthes.indexOf(monthKey);
+				if (item.getGenre().getIsIncome()) {
+					prices.set(index, prices.get(index) + item.getPrice());
+				} else {
+					prices.set(index, prices.get(index) - item.getPrice());
+				}
+			} else {
+				monthes.add(monthKey);
+				prices.add(item.getPrice());
+			}
+		}
+
+		for (String key : monthes) {
+			int index = monthes.indexOf(key);
+			System.out.println("month:" + key);
+			System.out.println("price:" + prices.get(index));
+		}
+		model.addAttribute("monthes", monthes);
+		model.addAttribute("prices", prices);
+
 		return "accountDetail";
 	}
 }
