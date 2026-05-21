@@ -8,13 +8,38 @@
 <body>
 	<header th:replace="~{header}"></header>
 	<div class="content">
-		<div class="left-content"></div>
-		<div class="main-content">
-			<h2>カレンダー</h2>
+		<div class="left-content">
+			<h2 id="h2-calendar">[[${year}]]年 [[${month}]]月</h2>
 			<hr>
-			<div id="manual-calendar">[[${calendarHtml}]]</div>
+			<form action="/calendar/select" method="post">
+				<input type="month" name="yearMonth" class="input-month"
+					th:value="|${year}-${#numbers.formatInteger(month, 2)}|">
+				<button class="classic-button">表示</button>
+			</form>
+			<div class="prev-next">
+				<form action="/calendar/this_month">
+					<button class="classic-button">今月</button>
+				</form>
+				<form action="/calendar/prev" method="post">
+					<input type="hidden" name="year" th:value="${year}">
+					<input type="hidden" name="month" th:value="${month}">
+					<button class="classic-button">前月</button>
+				</form>
+				<form action="/calendar/next" method="post">
+					<input type="hidden" name="year" th:value="${year}">
+					<input type="hidden" name="month" th:value="${month}">
+					<button class="classic-button">次月</button>
+				</form>
+			</div>
 		</div>
-		<div class="right-content"></div>
+		<div class="main-content">
+			<div id="calendar-upside"></div>
+			<div id="manual-calendar">[[${calendarHtml}]]</div>
+			<div id="calendar-downside"></div>
+		</div>
+		<div class="right-content">
+			<div th:replace="itemDetail"></div>
+		</div>
 	</div>
 	<footer th:replace="~{footer}"></footer>
 
@@ -24,27 +49,30 @@
 		let weekList = ['日', '月', '火', '水', '木', '金', '土'];
 		const year = /*[[${year}]]*/ 2026;
 		const month = /*[[${month}]]*/ 5;
-		console.log(year + "," + month);
 
 		const startDate = new Date(year, month - 1, 1);
 		const startDay = startDate.getDay(); // 曜日
 		const endDate = new Date(year, month, 0);
 		const endDayCount = endDate.getDate();
-		console.log("startDate:" + startDate + "\nstartDay:" + startDay);
-		
 		const today = new Date();
+		const lastMonthEndDay = new Date(year, month - 1, 0).getDate();
 
+		const items = /*[[${items}]]*/[];
+
+		let date;
 		let dayCount = 1;
+		let anotherMonthDay = 1;
 		let calendarHtml = '<table border="1" class="calendar-table"><tr>';
 		let flag = true;
+		let isMulti = false;
 
 		for (let i = 0; i < 7; i++) {
 			if (i == 0) {
 				calendarHtml += '<th style="color: red;">';
-			}else if(i==6){
+			} else if (i == 6) {
 				calendarHtml += '<th style="color: blue;">';
 			}
-			 else {
+			else {
 				calendarHtml += '<th>';
 			}
 			calendarHtml += weekList[i] + '</th>';
@@ -53,18 +81,38 @@
 		for (let week = 0; flag; week++) {
 			calendarHtml += '<tr>';
 			for (let day = 0; day < 7; day++) {
-				calendarHtml += '<td>';
+				isMulti = false;
+				date = year + '-'
+					+ String(month).padStart(2, '0') + '-'
+					+ String(dayCount).padStart(2, '0');
+
 				if (week == 0 && day < startDay) {
-					calendarHtml += '</td>';
+					let lastMonthDay = lastMonthEndDay - (startDay - day) + 1;
+					calendarHtml += `<td style="color: gray;">${lastMonthDay}</td>`;
 					continue;
 				} else if (dayCount > endDayCount) {
-					calendarHtml += '</td>';
+					calendarHtml += `<td style="color: gray;">${anotherMonthDay}</td>`;
+					anotherMonthDay++;
 					if (day == 6) {
 						flag = false;
 					}
 					continue;
 				}
-				calendarHtml += dayCount + '</td>';
+				calendarHtml += '<td><span>' + dayCount + '</span>';
+				for (const item of items) {
+					if (item.addDate == date) {
+						if (isMulti) {
+							calendarHtml += '<span style="font-weight: bold;">+α</span>';
+							break;
+						}
+						calendarHtml += `
+							<a href="/calendar/${year}/${month}?day=${dayCount}" class="calendar-button">
+								${item.itemName}
+							</a>`;
+						isMulti = true;
+					}
+				}
+				calendarHtml += '</td>';
 				dayCount++;
 			}
 			calendarHtml += '</tr>';
