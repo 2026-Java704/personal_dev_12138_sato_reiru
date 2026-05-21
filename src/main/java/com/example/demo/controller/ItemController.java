@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.demo.entity.Genre;
 import com.example.demo.entity.Item;
 import com.example.demo.model.Account;
+import com.example.demo.model.Method;
 import com.example.demo.repository.GenreRepository;
 import com.example.demo.repository.ItemRepository;
 import com.example.demo.repository.UserRepository;
@@ -43,7 +43,7 @@ public class ItemController {
 		model.addAttribute("genres", genres);
 
 		Integer userId = account.getId();
-		Integer totalPrice = calcTotalPriceMonth(itemRepository.findByUserId(userId));
+		Integer totalPrice = Method.calcTotalPriceMonth(itemRepository.findByUserId(userId));
 		model.addAttribute("totalPrice", totalPrice);
 
 		List<Item> items = null;
@@ -52,7 +52,7 @@ public class ItemController {
 		} else {
 			items = itemRepository.findByUserId(userId);
 		}
-		sortByDate(items);
+		Method.sortByDate(items);
 		model.addAttribute("items", items);
 		return "items";
 	}
@@ -118,51 +118,12 @@ public class ItemController {
 		return "redirect:/items";
 	}
 
-	@GetMapping("/items/calendar")
-	public String calcLatestMonth(Model model) {
-		List<Item> items = itemRepository.findByUserId(account.getId());
-		sortByDate(items);
-		model.addAttribute("items", items);
-		return "calendar";
-	}
-
 	@GetMapping("/items/{id}/detail")
 	public String detail(
 			@PathVariable Integer id,
 			Model model) {
 		model.addAttribute("item", itemRepository.findById(id).get());
 		return "detail";
-	}
-
-	@GetMapping("/calendar/{year}/{month}")
-	public String calendar(
-			@PathVariable Integer year,
-			@PathVariable Integer month,
-			Model model) {
-		model.addAttribute("year", year);
-		model.addAttribute("month", month);
-		return "calendar2";
-	}
-
-	// 日付順にソート
-	public void sortByDate(List<Item> list) {
-		list.sort(Comparator.comparing(Item::getAddDate).reversed());
-	}
-
-	// 今月の収支を計算
-	public Integer calcTotalPriceMonth(List<Item> list) {
-		Integer totalPrice = 0;
-		Integer nowMonth = LocalDate.now().getMonthValue();
-		for (Item item : list) {
-			if (item.getAddDate().getMonthValue() == nowMonth) {
-				if (item.getGenre().getIsIncome()) {
-					totalPrice += item.getPrice();
-				} else {
-					totalPrice -= item.getPrice();
-				}
-			}
-		}
-		return totalPrice;
 	}
 
 	@GetMapping("/account/detail")
