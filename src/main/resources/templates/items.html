@@ -8,14 +8,12 @@
 <body>
 	<header th:replace="~{header}"></header>
 	<div class="content">
-		<div class="left-content"></div>
+		<div class="left-content">
+			<div th:replace="accountInfo"></div>
+		</div>
 		<div class="main-content">
 			<h2>登録項目一覧</h2>
 			<hr>
-			<ul style="list-style: none;">
-				<li>ID：[[${@account.id}]]</li>
-				<li>名前：[[${@account.name}]]</li>
-			</ul>
 			<div style="display: flex;">
 				<form action="/items">
 					<button class="item-view-button-all">全商品</button>
@@ -40,7 +38,7 @@
 				</thead>
 				<tbody>
 					<tr th:each="item:${items}" th:object="${item}">
-						<td>[[*{itemName}]]</td>
+						<td><a th:href="@{/items(id=*{id})}">[[*{itemName}]]</a></td>
 						<td>[[*{genre.genreName}]]</td>
 						<td th:text="*{genre.isIncome} ? *{price} : ''"></td>
 						<td th:text="*{genre.isIncome} ? '' : *{price}"></td>
@@ -66,7 +64,9 @@
 				<span style="color: red;">[[${totalPrice}]]</span>
 			</p>
 		</div>
-		<div class="right-content"></div>
+		<div class="right-content">
+			<div th:replace="itemDetail"></div>
+		</div>
 	</div>
 	<footer th:replace="~{footer}"></footer>
 </body>
