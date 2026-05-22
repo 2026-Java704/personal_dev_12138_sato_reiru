@@ -8,7 +8,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity(name = "items")
 public class Item {
@@ -32,6 +36,11 @@ public class Item {
 	@Column(name = "add_date")
 	private LocalDate addDate;
 	private String comment;
+	@Lob
+	@JdbcTypeCode(SqlTypes.VARBINARY)
+	private byte[] receipt;
+	@Column(name = "file_type")
+	private String fileType;
 
 	public Item(String itemName, User user, Genre genre, Integer price, LocalDate addDate, String comment) {
 		this.itemName = itemName;
@@ -104,6 +113,22 @@ public class Item {
 
 	public Integer getId() {
 		return id;
+	}
+
+	public byte[] getReceipt() {
+		return receipt;
+	}
+
+	public void setReceipt(byte[] receipt) {
+		this.receipt = receipt;
+	}
+
+	public String getFileType() {
+		return fileType;
+	}
+
+	public void setFileType(String fileType) {
+		this.fileType = fileType;
 	}
 
 }
