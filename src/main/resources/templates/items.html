@@ -9,11 +9,11 @@
 	<header th:replace="~{header}"></header>
 	<div class="content">
 		<div class="left-content">
+			<h2>登録項目一覧</h2>
+			<hr>
 			<div th:replace="accountInfo"></div>
 		</div>
 		<div class="main-content">
-			<h2>登録項目一覧</h2>
-			<hr>
 			<div style="display: flex;">
 				<form action="/items">
 					<button class="item-view-button-all">全商品</button>
@@ -34,16 +34,23 @@
 						<th>備考</th>
 						<th>編集</th>
 						<th>削除</th>
+						<th>レシート</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr th:each="item:${items}" th:object="${item}">
 						<td><a th:href="@{/items(id=*{id})}">[[*{itemName}]]</a></td>
-						<td>[[*{genre.genreName}]]</td>
-						<td th:text="*{genre.isIncome} ? *{price} : ''"></td>
-						<td th:text="*{genre.isIncome} ? '' : *{price}"></td>
-						<td>[[*{addDate}]]</td>
-						<td>[[*{comment}]]</td>
+						<td><a th:href="@{/items(id=*{id})}">[[*{genre.genreName}]]</a></td>
+						<td class="table-num">
+							<a th:href="@{/items(id=*{id})}">
+								[[*{genre.isIncome} ? *{price} : '']]
+							</a></td>
+						<td class="table-num">
+							<a th:href="@{/items(id=*{id})}">
+								[[*{genre.isIncome} ? '' : *{price}]]
+							</a></td>
+						<td><a th:href="@{/items(id=*{id})}">[[*{addDate}]]</a></td>
+						<td><a th:href="@{/items(id=*{id})}">[[*{comment}]]</a></td>
 						<td>
 							<form th:action="@{/items/{id}/edit(id=*{id})}">
 								<button class="item-edit-button">編集</button>
@@ -54,11 +61,16 @@
 								<button class="item-delete-button">削除</button>
 							</form>
 						</td>
+						<td>
+							<form th:action="@{/items/{id}/receipt/edit(id=*{id})}">
+								<button class="item-receipt-button">登録</button>
+							</form>
+						</td>
 					</tr>
 				</tbody>
 			</table>
 			<form action="/items/add">
-				<button class="classic-button">新規登録</button>
+				<button class="add-button">新規登録</button>
 			</form>
 			<p class="total-price">今月の収支：
 				<span style="color: red;">[[${totalPrice}]]</span>
