@@ -15,7 +15,7 @@
 			<ul style="color: red;" th:if="${errors}">
 				<li th:each="error:${errors}">[[${error}]]</li>
 			</ul>
-			<form action="/register" method="post">
+			<form action="/register" method="post" class="input-form">
 				<table border="1">
 					<tr>
 						<th>名前</th>
