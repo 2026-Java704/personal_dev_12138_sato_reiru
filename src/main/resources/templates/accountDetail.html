@@ -4,16 +4,36 @@
 	<meta charset="UTF-8">
 	<title>アカウント情報</title>
 	<link rel="stylesheet" href="/css/style.css">
+	<style>
+		h3 {
+			margin: 0;
+			width: 100%;
+			text-align: center;
+			background: #fffde7;
+			border-bottom: solid 2px #333333;
+		}
+		
+		#account-detail-info{
+			margin: 20px 0;
+			width: fit-content;
+			justify-self: center;
+			justify-items: center;
+		}
+
+		#price-per-month,
+		#price-per-genre {
+			margin: 20px 50px;
+		}
+	</style>
 </head>
 <body>
 	<header th:replace="~{header}"></header>
 	<div class="content">
 		<div class="left-content"></div>
-		<div class="main-content">
+		<div class="main-content" th:with="red='#e74c3c', blue='#3b82f6'">
 			<div id="account-detail-info">
-				<h2>アカウント情報</h2>
-				<hr>
-				<table border="1" th:object="${user}">
+				<h3>アカウント情報</h3>
+				<table border="1" th:object="${user}" class="head-table">
 					<tr>
 						<th>アカウントID</th>
 						<td>[[*{id}]]</td>
@@ -28,17 +48,41 @@
 					</tr>
 				</table>
 			</div>
-			<div id="price-per-month">
-				<table border="1">
-					<tr>
-						<th>年月</th>
-						<th>収支</th>
-					</tr>
-					<tr th:each="month,state:${monthes}">
-						<td>[[${month}]]</td>
-						<td>[[${prices[state.index]}]]円</td>
-					</tr>
-				</table>
+			<div style="display: flex; justify-content: center;">
+				<div id="price-per-month">
+					<h3>月ごとの収支</h3>
+					<table border="1" class="head-table">
+						<tr>
+							<th>年月</th>
+							<th>収支</th>
+						</tr>
+						<tr th:each="entry:${monthMap}" th:object="${entry}"
+							th:with="c=*{value} > 0 ? ${blue} : ${red}">
+							<td>[[*{key}]]</td>
+							<td class="table-num">
+								<span th:style="'color:' + ${c}">[[*{value}]]</span>
+								円
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div id="price-per-genre">
+					<h3>ジャンルごとの収支</h3>
+					<table border="1" class="head-table">
+						<tr>
+							<th>ジャンル名</th>
+							<th>収支</th>
+						</tr>
+						<tr th:each="entry:${genreMap}" th:object="${entry}"
+							th:with="c=*{value} > 0 ? ${blue} : ${red}">
+							<td>[[*{key}]]</td>
+							<td class="table-num">
+								<span th:style="'color:' + ${c}">[[*{value}]]</span>
+								円
+							</td>
+						</tr>
+					</table>
+				</div>
 			</div>
 		</div>
 		<div class="right-content"></div>
