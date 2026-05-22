@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-	<title>手動カレンダー</title>
+	<title>カレンダー</title>
 	<link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -31,6 +31,9 @@
 					<button class="classic-button">次月</button>
 				</form>
 			</div>
+			<form action="/items/add">
+				<button class="add-button">新規登録</button>
+			</form>
 		</div>
 		<div class="main-content">
 			<div id="calendar-upside"></div>
@@ -98,7 +101,15 @@
 					}
 					continue;
 				}
-				calendarHtml += '<td><span>' + dayCount + '</span>';
+
+				calendarHtml += '<td><span style="';
+				if (day == 0) {
+					calendarHtml += 'color: red; ';
+				} else if (day == 6) {
+					calendarHtml += 'color: blue; ';
+				}
+				calendarHtml += 'font-weight: bold;">' + dayCount + '</span>';
+
 				for (const item of items) {
 					if (item.addDate == date) {
 						if (isMulti) {
@@ -106,9 +117,11 @@
 							break;
 						}
 						calendarHtml += `
-							<a href="/calendar/${year}/${month}?day=${dayCount}" class="calendar-button">
-								${item.itemName}
-							</a>`;
+							<a href="/calendar/${year}/${month}?day=${dayCount}" class="calendar-button`;
+						if(!item.genre.isIncome){
+							calendarHtml+='-minus';
+						}
+						calendarHtml += `">${item.itemName}</a>`;
 						isMulti = true;
 					}
 				}
