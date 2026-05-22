@@ -32,6 +32,7 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testAnnotationProcessor 'org.projectlombok:lombok'
+	implementation 'org.imgscalr:imgscalr-lib:4.2'
 }
 
 tasks.named('test') {

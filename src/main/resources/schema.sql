@@ -30,6 +30,8 @@ CREATE TABLE items
 	price INTEGER,
 	add_date DATE NOT NULL,
 	comment TEXT,
+	receipt bytea,
+	file_type TEXT,
 	FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
 	FOREIGN KEY (genre_id) REFERENCES genres(id)ON DELETE CASCADE
 );
