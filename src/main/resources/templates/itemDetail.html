@@ -1,9 +1,9 @@
 <div th:if="${details}">
-	<h2 style="color: white;">項目詳細</h2>
+	<h2>項目詳細</h2>
 	<div th:each="item:${details}" th:object="${item}">
 		<hr>
 		<div style="justify-items: center;">
-			<table border="1" style="background: white;">
+			<table border="1" class="item-detail-table">
 				<tr>
 					<th>名前</th>
 					<td>[[*{itemName}]]</td>
@@ -23,6 +23,17 @@
 				<tr>
 					<th>備考</th>
 					<td>[[*{comment}]]</td>
+				</tr>
+				<tr>
+					<th>レシート画像</th>
+					<td>
+						<div th:if="${image != null}">
+                            <a th:href="@{/items/{id}/receipt/edit(id=*{id})}"><img th:src="${'data:image/png;base64,'+image}" alt="レシート画像"></a>
+                        </div>
+                        <div th:if="${image == null}">
+                            <p>レシート画像は登録されていません。</p>
+                        </div>
+					</td>
 				</tr>
 			</table>
 		</div>
