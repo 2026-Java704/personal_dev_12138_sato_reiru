@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -38,10 +39,6 @@ public class UserController {
 
 	@GetMapping("/register")
 	public String register(Model model) {
-		//		model.addAttribute("name", "佐藤玲瑠");
-		//		model.addAttribute("email", "sato@example.com");
-		//		model.addAttribute("password", "himitu");
-		//		model.addAttribute("passwordConfirm", "himitu");
 		return "register";
 	}
 
@@ -76,6 +73,7 @@ public class UserController {
 		}
 		User user = new User(name, email, password);
 		userRepository.save(user);
+		model.addAttribute("message", "登録が完了しました");
 		return "redirect:/login";
 	}
 
@@ -90,13 +88,13 @@ public class UserController {
 			@RequestParam(defaultValue = "") String email,
 			@RequestParam(defaultValue = "") String password,
 			Model model) {
-		List<User> list = userRepository.findByEmailAndPassword(email, password);
-		if (list.isEmpty()) {
+		User user = userRepository.findByEmailAndPassword(email, password);
+		if (Objects.isNull(user)) {
 			model.addAttribute("message", "メールアドレスとパスワードが一致しませんでした。");
 			return "/login";
 		}
-		account.setId(list.get(0).getId());
-		account.setName(list.get(0).getUserName());
+		account.setId(user.getId());
+		account.setName(user.getUserName());
 		return "redirect:/items";
 	}
 }
