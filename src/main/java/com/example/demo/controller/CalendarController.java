@@ -205,6 +205,8 @@ public class CalendarController {
 
 	@PostMapping("/calendar/{year}/{month}/{id}/edit")
 	public String update(
+			@PathVariable Integer year,
+			@PathVariable Integer month,
 			@PathVariable Integer id,
 			@RequestParam(defaultValue = "") String name,
 			@RequestParam(defaultValue = "") Integer genreId,
@@ -224,6 +226,17 @@ public class CalendarController {
 				addDate,
 				comment);
 		itemRepository.save(item);
-		return "redirect:/calendar";
+		return "redirect:/calendar/" + year + "/" + month;
 	}
+
+	@PostMapping("/calendar/{year}/{month}/{id}/delete")
+	public String delete(
+			@PathVariable Integer year,
+			@PathVariable Integer month,
+			@PathVariable Integer id) {
+		itemRepository.deleteById(id);
+		return "redirect:/calendar/" + year + "/" + month;
+	}
+	//	@PostMapping("/calendar/{year}/{month}/{id}/image/edit")
+
 }
