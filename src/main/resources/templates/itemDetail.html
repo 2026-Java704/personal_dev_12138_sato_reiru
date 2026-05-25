@@ -1,7 +1,6 @@
 <div th:if="${details}">
 	<h2>項目詳細</h2>
 	<div th:each="item:${details}" th:object="${item}">
-		<hr>
 		<div style="justify-items: center;">
 			<table border="1" class="item-detail-table">
 				<tr>
@@ -25,17 +24,30 @@
 					<td>[[*{comment}]]</td>
 				</tr>
 				<tr>
-					<th>レシート画像</th>
+					<th>画像</th>
 					<td>
-						<div th:if="${image != null}">
-                            <a th:href="@{/items/{id}/receipt/edit(id=*{id})}"><img th:src="${'data:image/png;base64,'+image}" alt="レシート画像"></a>
-                        </div>
-                        <div th:if="${image == null}">
-                            <p>レシート画像は登録されていません。</p>
-                        </div>
+						<div th:if="${images}">
+							<a th:if="${images[item.id]} != null" th:href="@{/items/{id}/receipt/edit(id=*{id})}">
+								<img th:src="${'data:images[item.id]/png;base64,'+images[item.id]}"
+									alt="画像">
+							</a>
+						</div>
+						<div th:if="${images == null or images[item.id] == null}">画像は登録されていません</div>
 					</td>
 				</tr>
 			</table>
+			<div style="display: flex; justify-content: left; width: 100%;">
+				<form th:action="@{{path}/{id}/edit(path=${path},id=*{id})}">
+					<button class="item-edit-button">編集</button>
+				</form>
+				<form th:action="@{{path}/{id}/delete(path=${path},id=*{id})}" method="post">
+					<button class="item-delete-button">削除</button>
+				</form>
+				<form th:action="@{{path}/{id}/image/edit(path=${path},id=*{id})}">
+					<button class="item-image-button">画像登録</button>
+				</form>
+			</div>
 		</div>
+		<hr>
 	</div>
 </div>
