@@ -27,7 +27,7 @@ CREATE TABLE items
 	item_name TEXT NOT NULL,
 	user_id INTEGER NOT NULL,
 	genre_id INTEGER NOT NULL,
-	price INTEGER,
+	price INTEGER NOT NULL,
 	add_date DATE NOT NULL,
 	comment TEXT,
 	receipt bytea,
