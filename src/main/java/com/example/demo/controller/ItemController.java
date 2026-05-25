@@ -1,11 +1,5 @@
 package com.example.demo.controller;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -13,8 +7,9 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
-import javax.imageio.ImageIO;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,7 +48,11 @@ public class ItemController {
 	public String index(
 			@RequestParam(defaultValue = "") Integer id,
 			@RequestParam(defaultValue = "") Integer genreId,
-			Model model) {
+			Model model,
+			HttpServletRequest request) {
+		if (Method.nonLogin(account)) {
+			return "redirect:/";
+		}
 		List<Genre> genres = genreRepository.findAll();
 		model.addAttribute("genres", genres);
 
@@ -75,19 +74,26 @@ public class ItemController {
 			details.add(itemRepository.findById(id).get());
 			model.addAttribute("details", details);
 
+			Map<Integer, String> images = new HashMap<>();
 			int size = 100;
-			byte[] receipt = resizeImage(details.get(0).getReceipt(), size, size);
-			if (receipt != null) {
-				String image = Base64.getEncoder().encodeToString(receipt);
-				model.addAttribute("image", image);
+			byte[] data = Method.resizeImage(details.get(0).getReceipt(), size, size);
+			if (data != null) {
+				String image = Base64.getEncoder().encodeToString(data);
+				images.put(id, image);
+				model.addAttribute("images", images);
 			}
 		}
+
+		model.addAttribute("path", request.getRequestURI().toString());
 
 		return "items";
 	}
 
 	@GetMapping("/items/add")
 	public String add(Model model) {
+		if (Method.nonLogin(account)) {
+			return "redirect:/";
+		}
 		model.addAttribute("genres", genreRepository.findAll());
 		return "add";
 	}
@@ -98,7 +104,30 @@ public class ItemController {
 			@RequestParam(defaultValue = "") Integer genreId,
 			@RequestParam(defaultValue = "") Integer price,
 			@RequestParam(defaultValue = "") LocalDate addDate,
-			@RequestParam(defaultValue = "") String comment) {
+			@RequestParam(defaultValue = "") String comment,
+			Model model) {
+		if (Method.nonLogin(account)) {
+			return "redirect:/";
+		}
+		List<String> errors = new ArrayList<String>();
+		if (name.isEmpty()) {
+			errors.add("件名を入力してください");
+		}
+		if (Objects.isNull(genreId)) {
+			errors.add("ジャンルは必須です");
+		}
+		if (Objects.isNull(price)) {
+			errors.add("金額は必須です");
+		}
+		if (Objects.isNull(addDate)) {
+			errors.add("日付は必須です");
+		}
+		if (!errors.isEmpty()) {
+			model.addAttribute("errors", errors);
+			model.addAttribute("genres", genreRepository.findAll());
+			return "add";
+		}
+
 		Genre genre = genreRepository.findById(genreId).get();
 		Item item = new Item(
 				name,
@@ -115,6 +144,9 @@ public class ItemController {
 	public String edit(
 			@PathVariable Integer id,
 			Model model) {
+		if (Method.nonLogin(account)) {
+			return "redirect:/";
+		}
 		model.addAttribute("item", itemRepository.findById(id).get());
 		model.addAttribute("genres", genreRepository.findAll());
 		return "edit";
@@ -128,6 +160,9 @@ public class ItemController {
 			@RequestParam(defaultValue = "") Integer price,
 			@RequestParam(defaultValue = "") LocalDate addDate,
 			@RequestParam(defaultValue = "") String comment) {
+		if (Method.nonLogin(account)) {
+			return "redirect:/";
+		}
 		Item item = itemRepository.findById(id).get();
 		Genre genre = genreRepository.findById(genreId).get();
 		item.update(
@@ -143,6 +178,9 @@ public class ItemController {
 
 	@PostMapping("/items/{id}/delete")
 	public String delete(@PathVariable Integer id) {
+		if (Method.nonLogin(account)) {
+			return "redirect:/";
+		}
 		itemRepository.deleteById(id);
 		return "redirect:/items";
 	}
@@ -151,14 +189,21 @@ public class ItemController {
 	public String detail(
 			@PathVariable Integer id,
 			Model model) {
+		if (Method.nonLogin(account)) {
+			return "redirect:/";
+		}
 		model.addAttribute("item", itemRepository.findById(id).get());
 		return "detail";
 	}
 
 	@GetMapping("/account/detail")
 	public String showAccount(Model model) {
+		if (Method.nonLogin(account)) {
+			return "redirect:/";
+		}
 		model.addAttribute("user", userRepository.findById(account.getId()).get());
 
+		Integer sum = 0;
 		List<Item> allItems = itemRepository.findByUserId(account.getId());
 
 		Map<String, Integer> genreMap = new HashMap<String, Integer>();
@@ -171,6 +216,7 @@ public class ItemController {
 			if (!item.getGenre().getIsIncome()) {
 				price *= -1;
 			}
+			sum += price;
 			if (monthMap.containsKey(date)) {
 				monthMap.put(date, monthMap.get(date) + price);
 			} else {
@@ -185,26 +231,33 @@ public class ItemController {
 		}
 		model.addAttribute("monthMap", monthMap);
 		model.addAttribute("genreMap", genreMap);
+		model.addAttribute("wholePeriod", sum);
 
 		return "accountDetail";
 	}
 
-	@GetMapping("/items/{id}/receipt/edit")
-	public String receiptRegister(
+	@GetMapping("/items/{id}/image/edit")
+	public String imageRegister(
 			@PathVariable Integer id,
 			Model model) {
-		byte[] receipt = itemRepository.findById(id).get().getReceipt();
-		if (receipt != null) {
-			String image = Base64.getEncoder().encodeToString(receipt);
+		if (Method.nonLogin(account)) {
+			return "redirect:/";
+		}
+		byte[] data = itemRepository.findById(id).get().getReceipt();
+		if (data != null) {
+			String image = Base64.getEncoder().encodeToString(data);
 			model.addAttribute("image", image);
 		}
-		return "receipt";
+		return "image";
 	}
 
-	@PostMapping("/items/{id}/receipt/edit")
-	public String receiptUpdate(
+	@PostMapping("/items/{id}/image/edit")
+	public String imageUpdate(
 			@PathVariable Integer id,
 			@RequestParam MultipartFile file) {
+		if (Method.nonLogin(account)) {
+			return "redirect:/";
+		}
 		try {
 			Item item = itemRepository.findById(id).get();
 			item.setReceipt(file.getBytes());
@@ -214,41 +267,5 @@ public class ItemController {
 			e.printStackTrace();
 		}
 		return "redirect:/items";
-	}
-
-	// 画像サイズを調整
-	public byte[] resizeImage(byte[] imageBytes, int maxWidth, int maxHeight) {
-		if (imageBytes == null) {
-			return null;
-		}
-		try {
-			// 画像を読み込む
-			BufferedImage originalImage = ImageIO.read(new ByteArrayInputStream(imageBytes));
-			int originalWidth = originalImage.getWidth();
-			int originalHeight = originalImage.getHeight();
-
-			// サイズを計算する
-			double widthRatio = (double) maxWidth / originalWidth;
-			double heightRatio = (double) maxHeight / originalHeight;
-			double ratio = Math.min(widthRatio, heightRatio);
-
-			int newWidth = (int) (originalWidth * ratio);
-			int newHeight = (int) (originalHeight * ratio);
-
-			// 画像をリサイズする
-			Image resizedImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
-			BufferedImage outputImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
-			Graphics2D g2d = outputImage.createGraphics();
-			g2d.drawImage(resizedImage, 0, 0, null);
-			g2d.dispose();
-
-			// リサイズされた画像をバイト配列に変換する
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			ImageIO.write(outputImage, "jpg", baos);
-			return baos.toByteArray();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 }
