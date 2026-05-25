@@ -31,7 +31,7 @@
 					<button class="classic-button">次月</button>
 				</form>
 			</div>
-			<form action="/items/add">
+			<form action="/calendar/add">
 				<button class="add-button">新規登録</button>
 			</form>
 		</div>
@@ -57,8 +57,12 @@
 		const startDay = startDate.getDay(); // 曜日
 		const endDate = new Date(year, month, 0);
 		const endDayCount = endDate.getDate();
-		const today = new Date();
 		const lastMonthEndDay = new Date(year, month - 1, 0).getDate();
+
+		const today = new Date();
+		const todayString = today.getFullYear() + '-'
+			+ (today.getMonth() + 1).toString().padStart(2, '0') + '-'
+			+ today.getDate().toString().padStart(2, '0');
 
 		const items = /*[[${items}]]*/[];
 
@@ -86,8 +90,8 @@
 			for (let day = 0; day < 7; day++) {
 				isMulti = false;
 				date = year + '-'
-					+ String(month).padStart(2, '0') + '-'
-					+ String(dayCount).padStart(2, '0');
+					+ month.toString().padStart(2, '0') + '-'
+					+ dayCount.toString().padStart(2, '0');
 
 				if (week == 0 && day < startDay) {
 					let lastMonthDay = lastMonthEndDay - (startDay - day) + 1;
@@ -102,7 +106,12 @@
 					continue;
 				}
 
-				calendarHtml += '<td><span style="';
+				if (date == todayString) {
+					calendarHtml += '<td style="border: solid 2px #f00;"><span style="';
+				} else {
+					calendarHtml += '<td><span style="';
+				}
+
 				if (day == 0) {
 					calendarHtml += 'color: red; ';
 				} else if (day == 6) {
@@ -118,8 +127,8 @@
 						}
 						calendarHtml += `
 							<a href="/calendar/${year}/${month}?day=${dayCount}" class="calendar-button`;
-						if(!item.genre.isIncome){
-							calendarHtml+='-minus';
+						if (!item.genre.isIncome) {
+							calendarHtml += '-minus';
 						}
 						calendarHtml += `">${item.itemName}</a>`;
 						isMulti = true;
