@@ -69,7 +69,8 @@ h2 {
 .left-content {
 	width: 20vw;
 
-	background-image: linear-gradient(90deg, #D4AF37, #fffde7);
+
+	background-image: linear-gradient(90deg, #e1ca79, #fffde7);
 	/*background-color: #fffde7;
 	background-size: 80px 80px;
 	background-image:
@@ -102,7 +103,7 @@ h2 {
 	scrollbar-width: none;
 
 
-	background-image: linear-gradient(-90deg, #D4AF37, #fffde7);
+	background-image: linear-gradient(-90deg, #e1ca79, #fffde7);
 	/*background-color: #fffde7;
 	background-size: 80px 80px;
 	background-image:
@@ -248,7 +249,7 @@ h2 {
 	background: #fffde7;
 }
 
-.item-receipt-button {
+.item-image-button {
 	text-align: center;
 	text-decoration: none;
 	margin: 1px;
@@ -260,9 +261,14 @@ h2 {
 	transition: 0.2s;
 }
 
-.item-receipt-button:hover {
+.item-image-button:hover {
 	color: #28a745;
 	background: #fffde7;
+}
+
+.table-num {
+	text-align: right;
+	padding-right: 5px;
 }
 
 .item-table {
@@ -291,7 +297,7 @@ h2 {
 		display: block;
 		overflow-x: hidden;
 		overflow-y: auto;
-		max-height: 50vh;
+		max-height: 40vh;
 		background: #fffde7;
 		scrollbar-width: none;
 
@@ -300,18 +306,23 @@ h2 {
 			width: 100%;
 			table-layout: fixed;
 			transition: 0.1s;
+			
+			.table-num a{
+				justify-content: right;
+			}
 
 			td {
+				height: 0;
 				padding: 0;
 
 				a {
-					display: block;
-					top: 0;
-					left: 0;
+					display: flex;
 					width: 100%;
 					height: 100%;
 					color: #333333;
 					text-decoration: none;
+					justify-content: center;
+					align-items: center;
 				}
 			}
 		}
@@ -461,9 +472,6 @@ h2 {
 		max-height: 60px;
 		width: 80px;
 		max-width: 80px;
-	}
-
-	td {
 		font-size: 12px;
 		text-align: left;
 		vertical-align: top;
@@ -542,7 +550,14 @@ h2 {
 	}
 }
 
-.table-num {
-	text-align: right;
-	padding-right: 5px;
+.message-list {
+	color: red;
+	list-style: none;
+	background: #fffde7;
+	/*	background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 70%);*/
+
+	li {
+		width: fit-content;
+		text-align: left;
+	}
 }

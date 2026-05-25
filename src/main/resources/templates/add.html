@@ -11,9 +11,11 @@
 		<div class="left-content"></div>
 		<div class="main-content">
 			<h2>項目登録</h2>
-			<hr>
 			<form method="post" class="input-form">
-				<table border="1" >
+				<ul th:if="${errors}" class="message-list">
+					<li th:each="error:${errors}">[[${error}]]</li>
+				</ul>
+				<table border="1">
 					<tr>
 						<th>件名</th>
 						<td>
