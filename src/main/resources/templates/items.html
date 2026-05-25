@@ -10,7 +10,6 @@
 	<div class="content">
 		<div class="left-content">
 			<h2>登録項目一覧</h2>
-			<hr>
 			<div th:replace="accountInfo"></div>
 		</div>
 		<div class="main-content">
@@ -43,14 +42,14 @@
 						<td><a th:href="@{/items(id=*{id})}">[[*{genre.genreName}]]</a></td>
 						<td class="table-num">
 							<a th:href="@{/items(id=*{id})}">
-								[[*{genre.isIncome} ? *{price} : '']]
+								[[*{genre.isIncome} ? *{price} : '&nbsp;']]
 							</a></td>
 						<td class="table-num">
 							<a th:href="@{/items(id=*{id})}">
-								[[*{genre.isIncome} ? '' : *{price}]]
+								[[*{genre.isIncome} ? '&nbsp;' : *{price}]]
 							</a></td>
 						<td><a th:href="@{/items(id=*{id})}">[[*{addDate}]]</a></td>
-						<td><a th:href="@{/items(id=*{id})}">[[*{comment}]]</a></td>
+						<td><a th:href="@{/items(id=*{id})}">&nbsp;[[*{comment}]]&nbsp;</a></td>
 						<td>
 							<form th:action="@{/items/{id}/edit(id=*{id})}">
 								<button class="item-edit-button">編集</button>
@@ -62,8 +61,8 @@
 							</form>
 						</td>
 						<td>
-							<form th:action="@{/items/{id}/receipt/edit(id=*{id})}">
-								<button class="item-receipt-button">登録</button>
+							<form th:action="@{/items/{id}/image/edit(id=*{id})}">
+								<button class="item-image-button">登録</button>
 							</form>
 						</td>
 					</tr>
