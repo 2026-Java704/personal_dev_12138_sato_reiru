@@ -48,6 +48,7 @@ public class ItemController {
 	public String index(
 			@RequestParam(defaultValue = "") Integer id,
 			@RequestParam(defaultValue = "") Integer genreId,
+			@RequestParam(defaultValue = "") Integer sortType,
 			Model model,
 			HttpServletRequest request) {
 		if (Method.nonLogin(account)) {
@@ -66,7 +67,11 @@ public class ItemController {
 		} else {
 			items = itemRepository.findByUserId(userId);
 		}
-		Method.sortByDate(items);
+		if (Objects.nonNull(sortType) && sortType == 1) {
+			Method.sortByPrice(items, false);
+		} else {
+			Method.sortByDate(items, false);
+		}
 		model.addAttribute("items", items);
 
 		if (id != null) {
