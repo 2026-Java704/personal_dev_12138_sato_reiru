@@ -11,6 +11,12 @@
 		<div class="left-content"></div>
 		<div class="main-content">
 			<h2>項目編集</h2>
+			<div th:if="${errors}" class="error-container">
+				<span>入力エラー</span>
+				<ul>
+					<li th:each="error:${errors}">[[${error}]]</li>
+				</ul>
+			</div>
 			<form method="post" class="input-form">
 				<table border="1" th:object="${item}">
 					<tr>
