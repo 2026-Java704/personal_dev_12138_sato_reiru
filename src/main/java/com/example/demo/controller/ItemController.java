@@ -49,8 +49,11 @@ public class ItemController {
 			@RequestParam(defaultValue = "") Integer id,
 			@RequestParam(defaultValue = "") Integer genreId,
 			@RequestParam(defaultValue = "") Integer sortType,
+			@RequestParam(defaultValue = "false") Boolean isAsc,
 			Model model,
 			HttpServletRequest request) {
+		model.addAttribute("sortType", sortType);
+		model.addAttribute("isAsc", isAsc);
 		if (Method.nonLogin(account)) {
 			return "redirect:/";
 		}
@@ -68,9 +71,9 @@ public class ItemController {
 			items = itemRepository.findByUserId(userId);
 		}
 		if (Objects.nonNull(sortType) && sortType == 1) {
-			Method.sortByPrice(items, false);
+			Method.sortByPrice(items, isAsc);
 		} else {
-			Method.sortByDate(items, false);
+			Method.sortByDate(items, isAsc);
 		}
 		model.addAttribute("items", items);
 
