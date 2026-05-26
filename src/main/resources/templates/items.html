@@ -4,6 +4,16 @@
 	<meta charset="UTF-8">
 	<title>登録項目一覧</title>
 	<link rel="stylesheet" href="/css/style.css">
+	<style>
+		.filter-name {
+			font-weight: bold;
+			margin: 5px;
+			padding-left: 5px;
+			border-left: 3px solid #333333;
+			color: #333333;
+			background-color: #fffde7;
+		}
+	</style>
 </head>
 <body>
 	<header th:replace="~{header}"></header>
@@ -15,7 +25,7 @@
 		<div class="main-content">
 			<div style="display: flex;">
 				<div>
-					<span>フィルター</span>
+					<span class="filter-name">フィルター</span>
 					<div style="display: flex;">
 						<form action="/items">
 							<button class="item-view-button-all">全商品</button>
@@ -27,7 +37,7 @@
 					</div>
 				</div>
 				<div style="padding-left: 20px;">
-					<span>ソート</span>
+					<span class="filter-name">ソート</span>
 					<div>
 						<form action="/items" style="display: flex;">
 							<label class="sort-select">
@@ -86,7 +96,8 @@
 						</td>
 						<td>
 							<form th:action="@{/items/{id}/delete(id=*{id})}" method="post">
-								<button class="item-delete-button">削除</button>
+								<button type="submit" class="item-delete-button"
+									onclick="return confirm('削除しますか？')">削除</button>
 							</form>
 						</td>
 						<td>
@@ -97,9 +108,14 @@
 					</tr>
 				</tbody>
 			</table>
-			<form action="/items/add">
-				<button class="add-button">新規登録</button>
-			</form>
+			<div style="display: flex;">
+				<div>
+					<form action="/items/add">
+						<button class="add-button">新規登録</button>
+					</form>
+				</div>
+				<div></div>
+			</div>
 			<p class="total-price">今月の収支：
 				<span style="color: red;">[[${totalPrice}]]</span>
 			</p>
