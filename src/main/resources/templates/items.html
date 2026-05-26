@@ -28,14 +28,22 @@
 				</div>
 				<div style="padding-left: 20px;">
 					<span>ソート</span>
-					<div style="display: flex;">
-						<form action="/items">
-							<select name="sortType" class="sort-select">
-								<option value="0">日付</option>
-								<option value="1">値段</option>
-							</select>
-							<input type="radio" name="isAsc" value="false" class="sort-radio">降順
-							<input type="radio" name="isAsc" value="true" class="sort-radio">昇順
+					<div>
+						<form action="/items" style="display: flex;">
+							<label class="sort-select">
+								<select name="sortType">
+									<option value="0" th:selected="${sortType == null or sortType == 0}">日付</option>
+									<option value="1" th:selected="${sortType == 1}">値段</option>
+								</select>
+							</label>
+							<fieldset class="sort-radio">
+								<label>
+									<input type="radio" name="isAsc" value="false" th:checked="${not isAsc}">降順
+								</label>
+								<label>
+									<input type="radio" name="isAsc" value="true" th:checked="${isAsc}">昇順
+								</label>
+							</fieldset>
 							<button class="item-sort-button">ソート</button>
 						</form>
 					</div>
