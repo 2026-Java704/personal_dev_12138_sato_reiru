@@ -14,13 +14,31 @@
 		</div>
 		<div class="main-content">
 			<div style="display: flex;">
-				<form action="/items">
-					<button class="item-view-button-all">全商品</button>
-				</form>
-				<form th:each="genre:${genres}" action="/items">
-					<input type="hidden" name="genreId" th:value="${genre.id}">
-					<button class="item-view-button-genre">[[${genre.genreName}]]</button>
-				</form>
+				<div>
+					<span>フィルター</span>
+					<div style="display: flex;">
+						<form action="/items">
+							<button class="item-view-button-all">全商品</button>
+						</form>
+						<form th:each="genre:${genres}" action="/items">
+							<input type="hidden" name="genreId" th:value="${genre.id}">
+							<button class="item-view-button-genre">[[${genre.genreName}]]</button>
+						</form>
+					</div>
+				</div>
+				<div style="padding-left: 20px;">
+					<span>ソート</span>
+					<div style="display: flex;">
+						<form action="/items">
+							<input type="hidden" name="sortType" value="0">
+							<button class="item-sort-button">日付</button>
+						</form>
+						<form action="/items">
+							<input type="hidden" name="sortType" value="1">
+							<button class="item-sort-button">金額</button>
+						</form>
+					</div>
+				</div>
 			</div>
 			<table border="1" class="item-table">
 				<thead>
@@ -43,11 +61,13 @@
 						<td class="table-num">
 							<a th:href="@{/items(id=*{id})}">
 								[[*{genre.isIncome} ? *{price} : '&nbsp;']]
-							</a></td>
+							</a>
+						</td>
 						<td class="table-num">
 							<a th:href="@{/items(id=*{id})}">
 								[[*{genre.isIncome} ? '&nbsp;' : *{price}]]
-							</a></td>
+							</a>
+						</td>
 						<td><a th:href="@{/items(id=*{id})}">[[*{addDate}]]</a></td>
 						<td><a th:href="@{/items(id=*{id})}">&nbsp;[[*{comment}]]&nbsp;</a></td>
 						<td>
