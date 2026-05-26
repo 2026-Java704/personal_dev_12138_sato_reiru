@@ -167,11 +167,32 @@ public class ItemController {
 			@RequestParam(defaultValue = "") Integer genreId,
 			@RequestParam(defaultValue = "") Integer price,
 			@RequestParam(defaultValue = "") LocalDate addDate,
-			@RequestParam(defaultValue = "") String comment) {
+			@RequestParam(defaultValue = "") String comment,
+			Model model) {
 		if (Method.nonLogin(account)) {
 			return "redirect:/";
 		}
+		List<String> errors = new ArrayList<String>();
 		Item item = itemRepository.findById(id).get();
+
+		if (name.isEmpty()) {
+			errors.add("名前は必須です");
+		}
+		if (Objects.isNull(genreId)) {
+			errors.add("ジャンルは必須です");
+		}
+		if (Objects.isNull(price)) {
+			errors.add("金額は必須です");
+		}
+		if (Objects.isNull(addDate)) {
+			errors.add("日付は必須です");
+		}
+		if (!errors.isEmpty()) {
+			model.addAttribute("errors", errors);
+			model.addAttribute("item", item);
+			return "edit";
+		}
+
 		Genre genre = genreRepository.findById(genreId).get();
 		item.update(
 				name,
