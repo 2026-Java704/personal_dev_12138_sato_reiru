@@ -23,8 +23,20 @@ public class Method {
 	}
 
 	// 日付順にソート
-	public static void sortByDate(List<Item> list) {
-		list.sort(Comparator.comparing(Item::getAddDate).reversed());
+	public static void sortByDate(List<Item> list, boolean isAsc) {
+		if (isAsc) {
+			list.sort(Comparator.comparing(Item::getAddDate));
+		} else {
+			list.sort(Comparator.comparing(Item::getAddDate).reversed());
+		}
+	}
+
+	public static void sortByPrice(List<Item> list, boolean isAsc) {
+		if (isAsc) {
+			list.sort(Comparator.comparing(Item::getPrice));
+		} else {
+			list.sort(Comparator.comparing(Item::getPrice).reversed());
+		}
 	}
 
 	// 今月の収支を計算
