@@ -453,6 +453,7 @@ h2 {
 .total-price {
 	width: 200px;
 	font-size: large;
+	font-weight: bold;
 	border-bottom: double 5px #333333;
 }
 
