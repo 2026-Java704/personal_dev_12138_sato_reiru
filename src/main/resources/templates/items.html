@@ -30,12 +30,13 @@
 					<span>ソート</span>
 					<div style="display: flex;">
 						<form action="/items">
-							<input type="hidden" name="sortType" value="0">
-							<button class="item-sort-button">日付</button>
-						</form>
-						<form action="/items">
-							<input type="hidden" name="sortType" value="1">
-							<button class="item-sort-button">金額</button>
+							<select name="sortType" class="sort-select">
+								<option value="0">日付</option>
+								<option value="1">値段</option>
+							</select>
+							<input type="radio" name="isAsc" value="false" class="sort-radio">降順
+							<input type="radio" name="isAsc" value="true" class="sort-radio">昇順
+							<button class="item-sort-button">ソート</button>
 						</form>
 					</div>
 				</div>
