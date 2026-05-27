@@ -41,6 +41,11 @@ h2 {
 	min-height: 50px;
 	height: 50px;
 	bottom: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 5px;
+	margin-bottom: 0;
 }
 
 .content {
@@ -173,13 +178,6 @@ h2 {
 	text-decoration: none;
 }
 
-.main-footer {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin-top: 5px;
-	margin-bottom: 0;
-}
 
 .classic-button {
 	text-align: center;
@@ -231,6 +229,27 @@ h2 {
 	color: #e74c3c;
 	background: #fffde7;
 }
+
+.delete-link {
+	display: inline-block;
+	text-align: center;
+	text-decoration: none;
+	font-size: 13px;
+	height: 1.2em;
+	margin-top: 5px;
+	padding: 5px 10px 8px 10px;
+	border: 2px solid #e74c3c;
+	border-radius: 5px;
+	background: #e74c3c;
+	color: #fffde7;
+	transition: 0.2s;
+}
+
+.delete-link:hover {
+	color: #e74c3c;
+	background: #fffde7;
+}
+
 
 .item-edit-button {
 	text-align: center;
@@ -470,10 +489,13 @@ h2 {
 }
 
 .total-price {
-	width: 200px;
+	width: 100%;
+	padding-top: 10px;
+	padding-left: 10px;
 	font-size: large;
 	font-weight: bold;
 	border-bottom: double 5px #333333;
+	background: white;
 }
 
 .calendar-table {
@@ -567,18 +589,6 @@ h2 {
 		line-height: 1.5;
 		padding: 0.5em;
 		list-style-type: none;
-	}
-}
-
-.message-list {
-	color: red;
-	list-style: none;
-	background: #fffde7;
-	/*	background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 70%);*/
-
-	li {
-		width: fit-content;
-		text-align: left;
 	}
 }
 
