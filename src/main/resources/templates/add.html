@@ -8,13 +8,17 @@
 <body>
 	<header th:replace="~{header}"></header>
 	<div class="content">
-		<div class="left-content"></div>
+		<div class="left-content">
+			<div th:replace="accountInfo"></div>
+		</div>
 		<div class="main-content">
 			<h2>項目登録</h2>
-			<form method="post" class="input-form">
-				<ul th:if="${errors}" class="message-list">
+			<div th:if="${errors}"  class="error-container">
+				<ul>
 					<li th:each="error:${errors}">[[${error}]]</li>
 				</ul>
+			</div>
+			<form method="post" class="input-form">
 				<table border="1">
 					<tr>
 						<th>件名</th>
