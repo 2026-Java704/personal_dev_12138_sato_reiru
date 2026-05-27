@@ -73,13 +73,11 @@ public class UserController {
 		}
 		User user = new User(name, email, password);
 		userRepository.save(user);
-		model.addAttribute("message", "登録が完了しました");
 		return "redirect:/login";
 	}
 
 	@GetMapping("/login")
 	public String index(Model model) {
-		model.addAttribute("message", "");
 		return "login";
 	}
 
