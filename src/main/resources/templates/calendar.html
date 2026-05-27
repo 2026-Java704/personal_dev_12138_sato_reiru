@@ -11,6 +11,7 @@
 		<div class="left-content">
 			<h2 id="h2-calendar">[[${year}]]年 [[${month}]]月</h2>
 			<hr>
+			<div th:replace="accountInfo"></div>
 			<form action="/calendar/select" method="post">
 				<input type="month" name="yearMonth" class="input-month"
 					th:value="|${year}-${#numbers.formatInteger(month, 2)}|">
