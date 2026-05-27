@@ -8,9 +8,16 @@
 <body>
 	<header th:replace="~{header}"></header>
 	<div class="content">
-		<div class="left-content"></div>
+		<div class="left-content">
+			<div th:replace="accountInfo"></div>
+		</div>
 		<div class="main-content">
 			<h2>画像登録</h2>
+			<div class="error-container" th:if="${error}">
+				<ul>
+					<li>[[${error}]]</li>
+				</ul>
+			</div>
 			<form method="post" enctype="multipart/form-data" class="input-form">
 				<table border="1">
 					<tr>
@@ -19,7 +26,10 @@
 					</tr>
 				</table>
 				<button class="add-button">登録</button>
+				<a href="javascript:deleteForm.submit()" class="delete-link" onclick="return confirm('画像を削除しますか？')">削除</a>
+				<input type="hidden" name="image" th:value="${image}">
 			</form>
+			<form name="deleteForm" action="delete" method="post"></form>
 			<div th:if="${image}" style="text-align: center;">
 				<hr>
 				<h2>登録済み画像</h2>
