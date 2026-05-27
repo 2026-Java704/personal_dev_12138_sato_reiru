@@ -11,9 +11,12 @@
 		<div class="left-content"></div>
 		<div class="main-content">
 			<h2>ユーザ登録</h2>
-			<ul style="color: red;" th:if="${errors}">
-				<li th:each="error:${errors}">[[${error}]]</li>
-			</ul>
+			<div class="error-container" th:if="${errors}">
+				<span>入力エラー</span>
+				<ul th:if="${errors}">
+					<li th:each="error:${errors}">[[${error}]]</li>
+				</ul>
+			</div>
 			<form action="/register" method="post" class="input-form">
 				<table border="1">
 					<tr>
