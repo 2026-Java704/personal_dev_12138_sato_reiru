@@ -27,7 +27,7 @@
 					<th>画像</th>
 					<td>
 						<div th:if="${images}">
-							<a th:if="${images[item.id]} != null" th:href="@{/items/{id}/receipt/edit(id=*{id})}">
+							<a th:if="${images[item.id]} != null" th:href="@{{path}/{id}/image/edit(path=${path},id=*{id})}">
 								<img th:src="${'data:images[item.id]/png;base64,'+images[item.id]}"
 									alt="画像">
 							</a>
@@ -41,7 +41,7 @@
 					<button class="item-edit-button">編集</button>
 				</form>
 				<form th:action="@{{path}/{id}/delete(path=${path},id=*{id})}" method="post">
-					<button class="item-delete-button">削除</button>
+					<button class="item-delete-button" th:onclick="return confirm('削除しますか？')">削除</button>
 				</form>
 				<form th:action="@{{path}/{id}/image/edit(path=${path},id=*{id})}">
 					<button class="item-image-button">画像登録</button>
