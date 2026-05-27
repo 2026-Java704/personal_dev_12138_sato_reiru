@@ -61,8 +61,7 @@ public class ItemController {
 		model.addAttribute("genres", genres);
 
 		Integer userId = account.getId();
-		Integer totalPrice = Method.calcTotalPriceMonth(itemRepository.findByUserId(userId));
-		model.addAttribute("totalPrice", totalPrice);
+		model.addAttribute("totalPrice", Method.calcTotalPriceMonth(itemRepository.findByUserId(userId)));
 
 		List<Item> items = null;
 		if (genreId != null) {
@@ -103,6 +102,8 @@ public class ItemController {
 			return "redirect:/";
 		}
 		model.addAttribute("genres", genreRepository.findAll());
+		model.addAttribute("totalPrice", Method.calcTotalPriceMonth(itemRepository.findByUserId(account.getId())));
+
 		return "add";
 	}
 
@@ -117,6 +118,8 @@ public class ItemController {
 		if (Method.nonLogin(account)) {
 			return "redirect:/";
 		}
+		model.addAttribute("totalPrice", Method.calcTotalPriceMonth(itemRepository.findByUserId(account.getId())));
+
 		List<String> errors = new ArrayList<String>();
 		if (name.isEmpty()) {
 			errors.add("件名を入力してください");
@@ -155,6 +158,8 @@ public class ItemController {
 		if (Method.nonLogin(account)) {
 			return "redirect:/";
 		}
+		model.addAttribute("totalPrice", Method.calcTotalPriceMonth(itemRepository.findByUserId(account.getId())));
+
 		model.addAttribute("item", itemRepository.findById(id).get());
 		model.addAttribute("genres", genreRepository.findAll());
 		return "edit";
@@ -172,6 +177,8 @@ public class ItemController {
 		if (Method.nonLogin(account)) {
 			return "redirect:/";
 		}
+		model.addAttribute("totalPrice", Method.calcTotalPriceMonth(itemRepository.findByUserId(account.getId())));
+
 		List<String> errors = new ArrayList<String>();
 		Item item = itemRepository.findById(id).get();
 
@@ -212,17 +219,6 @@ public class ItemController {
 		}
 		itemRepository.deleteById(id);
 		return "redirect:/items";
-	}
-
-	@GetMapping("/items/{id}/detail")
-	public String detail(
-			@PathVariable Integer id,
-			Model model) {
-		if (Method.nonLogin(account)) {
-			return "redirect:/";
-		}
-		model.addAttribute("item", itemRepository.findById(id).get());
-		return "detail";
 	}
 
 	@GetMapping("/account/detail")
@@ -272,6 +268,8 @@ public class ItemController {
 		if (Method.nonLogin(account)) {
 			return "redirect:/";
 		}
+		model.addAttribute("totalPrice", Method.calcTotalPriceMonth(itemRepository.findByUserId(account.getId())));
+
 		byte[] data = itemRepository.findById(id).get().getReceipt();
 		if (data != null) {
 			String image = Base64.getEncoder().encodeToString(data);
@@ -283,9 +281,20 @@ public class ItemController {
 	@PostMapping("/items/{id}/image/edit")
 	public String imageUpdate(
 			@PathVariable Integer id,
-			@RequestParam MultipartFile file) {
+			@RequestParam(defaultValue = "") String image,
+			@RequestParam MultipartFile file,
+			Model model) {
 		if (Method.nonLogin(account)) {
 			return "redirect:/";
+		}
+		model.addAttribute("totalPrice", Method.calcTotalPriceMonth(itemRepository.findByUserId(account.getId())));
+
+		if (Objects.isNull(file) || file.isEmpty()) {
+			model.addAttribute("error", "画像が選択されていません");
+			if (!image.isEmpty()) {
+				model.addAttribute("image", image);
+			}
+			return "image";
 		}
 		try {
 			Item item = itemRepository.findById(id).get();
@@ -295,6 +304,16 @@ public class ItemController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return "redirect:/items";
+	}
+
+	@PostMapping("/items/{id}/image/delete")
+	public String deleteImage(@PathVariable Integer id) {
+		System.out.println("items image delete.");
+		Item item = itemRepository.findById(id).get();
+		item.setReceipt(null);
+		item.setFileType(null);
+		itemRepository.save(item);
 		return "redirect:/items";
 	}
 }
